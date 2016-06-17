@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Linije;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -14,13 +15,8 @@ namespace GSP
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["GSPConnection"].ConnectionString);
-
-            SqlDataAdapter adapter = new SqlDataAdapter("GetAllLines", connection);
-            adapter.SelectCommand.CommandType = CommandType.StoredProcedure;
-           
-            DataSet ds = new DataSet();
-            adapter.Fill(ds, "GetAllLines");
+            Linija linije = new Linija();
+            DataSet ds = linije.ListByID(DropDownList1.SelectedValue, RadioButtonList1.SelectedValue == "Dnevna"?true:false);
 
             if (ds.Tables[0].Rows.Count != 0)
             {
@@ -28,6 +24,13 @@ namespace GSP
                 Repeater1.DataBind();
             }
                
+        }
+
+        protected void Repeater1_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+
+            
+            Response.Redirect("LinijaOpis.aspx?linija=" + e.CommandArgument.ToString());
         }
     }
 }

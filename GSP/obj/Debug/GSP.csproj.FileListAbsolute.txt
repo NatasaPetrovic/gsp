@@ -49,3 +49,5 @@ D:\Doktorske\Internet programiranje\GSP\GSP\bin\Microsoft.Owin.Security.OAuth.xm
 D:\Doktorske\Internet programiranje\GSP\GSP\obj\Debug\GSP.csprojResolveAssemblyReference.cache
 D:\Doktorske\Internet programiranje\GSP\GSP\obj\Debug\GSP.dll
 D:\Doktorske\Internet programiranje\GSP\GSP\obj\Debug\GSP.pdb
+D:\Doktorske\Internet programiranje\GSP\GSP\bin\Linije.dll
+D:\Doktorske\Internet programiranje\GSP\GSP\bin\Linije.pdb

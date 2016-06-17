@@ -157,6 +157,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="LinijaOpis.aspx" />
     <Content Include="Linije.aspx" />
     <Content Include="packages.config" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -283,6 +284,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="LinijaOpis.aspx.cs">
+      <DependentUpon>LinijaOpis.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LinijaOpis.aspx.designer.cs">
+      <DependentUpon>LinijaOpis.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Linije.aspx.cs">
       <DependentUpon>Linije.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -324,6 +332,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Controls\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Linije\Linije.csproj">
+      <Project>{06ca8bb6-87c1-4310-a23b-0786c6e95eb2}</Project>
+      <Name>Linije</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
