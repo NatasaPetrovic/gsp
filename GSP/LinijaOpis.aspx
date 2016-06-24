@@ -16,23 +16,20 @@
                  <%# DataBinder.Eval(Container.DataItem, "Naziv") %>
             </div>
         </ItemTemplate>
-       
     </asp:Repeater>
-             <asp:RadioButtonList ID="RadioButtonList2" runat="server" AutoPostBack="true">
+    <asp:RadioButtonList ID="RadioButtonList2" runat="server" AutoPostBack="true">
         <asp:ListItem Selected="True">Radni dan</asp:ListItem>
         <asp:ListItem>Subota</asp:ListItem>
         <asp:ListItem>Nedelja</asp:ListItem>
     </asp:RadioButtonList>
-                  
+            od <asp:TextBox ID="TextBox1" runat="server" AutoPostBack="true"></asp:TextBox> do <asp:TextBox ID="TextBox2" runat="server" AutoPostBack="true"></asp:TextBox>
                       <asp:Panel ID="container" runat="server"></asp:Panel>
-                     </div>
            <%-- <asp:Repeater ID="Repeater2" runat="server">
         <ItemTemplate>
            <div class="divStyle" id="divStyle">
                  <%# DataBinder.Eval(Container.DataItem, "Vreme") %>
             </div>
         </ItemTemplate>
-       
     </asp:Repeater>--%>
         </ContentTemplate>
     </asp:UpdatePanel>

@@ -59,22 +59,26 @@ namespace GSP
             string dan = RadioButtonList2.SelectedValue;
             if (dan == "Radni dan")
                 dan = "radni";
-            
-            polasci = polazak.RedVoznje(linija, RadioButtonList1.SelectedValue, dan);
+            int vremeOd, vremeDo;
+            if (TextBox1.Text != null && TextBox1.Text != "")
+                int.TryParse(TextBox1.Text, out vremeOd);
+            else
+                vremeOd = -1;
+            if (TextBox2.Text != null && TextBox2.Text != "")
+                int.TryParse(TextBox2.Text, out vremeDo);
+            else 
+                vremeDo = -1;
+
+            polasci = polazak.RedVoznje(linija, RadioButtonList1.SelectedValue, dan, vremeOd, vremeDo);
 
             Control container = this.FindControlRecursive("container");
-            foreach(Polazak pol in polasci) {
+            foreach (Polazak pol in polasci)
+            {
                 HtmlGenericControl div = new HtmlGenericControl("div");
-               
-                div.Controls.Add( new Label() { Text = pol.Vreme + "\r\n" } );
-                div.InnerHtml = pol + "";
-               container.Controls.Add(div);
-}
-            //if (ds.Tables[0].Rows.Count != 0)
-            //{
-            //    Repeater2.DataSource = ds.Tables[0];
-            //    Repeater2.DataBind();
-            //}
+                div.InnerHtml = pol.Vreme + "";
+                container.Controls.Add(div);
+            }
+
 
         }
     }
