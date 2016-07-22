@@ -3644,8 +3644,7 @@ input[type="button"].btn-block {
 
 .input-group .form-control {
   width: 100%;
-  margin-bottom: 0;
-}
+  }
 
 .input-group-lg > .form-control,
 .input-group-lg > .input-group-addon,

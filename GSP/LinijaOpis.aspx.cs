@@ -10,76 +10,44 @@ using System.Web.UI.HtmlControls;
 
 namespace GSP
 {
-    public static class ControlExtensions
-    {
-        /// <summary>
-        /// recursively finds a child control of the specified parent.
-        /// </summary>
-        /// <param name="control"></param>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public static Control FindControlRecursive(this Control control, string id)
-        {
-            if (control == null) return null;
-            //try to find the control at the current level
-            Control ctrl = control.FindControl(id);
-
-            if (ctrl == null)
-            {
-                //search the children
-                foreach (Control child in control.Controls)
-                {
-                    ctrl = FindControlRecursive(child, id);
-
-                    if (ctrl != null) break;
-                }
-            }
-            return ctrl;
-        }
-    }
-
     public partial class LinijaOpis : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string linija = Request.QueryString["linija"];
-            Stajaliste stajalista = new Stajaliste();
-
-            DataSet ds = stajalista.ListStajalisteByLinijaAndSmer(linija, RadioButtonList1.SelectedValue);
-
-            if (ds.Tables[0].Rows.Count != 0)
-            {
-                Repeater1.DataSource = ds.Tables[0];
-                Repeater1.DataBind();
-            }
-
-            Polazak polazak = new Polazak();
-            List<Polazak> polasci = new List<Polazak>();
-
-            string dan = RadioButtonList2.SelectedValue;
-            if (dan == "Radni dan")
-                dan = "radni";
-            int vremeOd, vremeDo;
-            if (TextBox1.Text != null && TextBox1.Text != "")
-                int.TryParse(TextBox1.Text, out vremeOd);
+            string smer;
+            if (DropDownList1.SelectedValue == "")
+                smer = "A";
             else
-                vremeOd = -1;
-            if (TextBox2.Text != null && TextBox2.Text != "")
-                int.TryParse(TextBox2.Text, out vremeDo);
-            else 
-                vremeDo = -1;
+                smer = DropDownList1.SelectedValue;
 
-            polasci = polazak.RedVoznje(linija, RadioButtonList1.SelectedValue, dan, vremeOd, vremeDo);
+            Linija linija = new Linija();
+            linija.Naziv = Request.QueryString["linija"];
 
-            Control container = this.FindControlRecursive("container");
-            foreach (Polazak pol in polasci)
+            linija.GetInfo();
+
+            DivNaziv.InnerHtml = linija.Naziv + " " + linija.OpisLinije;
+
+            linija.GetRedVoznje(smer, DropDownList2.SelectedValue);
+
+            foreach (var polazak in linija.RedVoznje)
             {
-                HtmlGenericControl div = new HtmlGenericControl("div");
-                div.InnerHtml = pol.Vreme + "";
-                container.Controls.Add(div);
+                HtmlGenericControl divPolazak = new HtmlGenericControl();
+                divPolazak.TagName = "div";
+                divPolazak.Attributes["class"] = "col-md-2 col-sm-2 col-xs-2 list-sub center";
+                divPolazak.InnerHtml = polazak.Vreme;
+                Polasci.Controls.Add(divPolazak);
             }
 
+            linija.GetRuta(smer);
 
+            foreach (var item in linija.Ruta)
+            {
+                HtmlGenericControl divRuta = new HtmlGenericControl();
+                divRuta.TagName = "div";
+                divRuta.Attributes["class"] = "col-md-12 col-sm-12 col-xs-12 list-sub";
+                divRuta.InnerHtml = item.Naziv;
+                Stajalista.Controls.Add(divRuta);
+            }
         }
     }
 }

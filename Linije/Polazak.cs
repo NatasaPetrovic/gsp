@@ -42,7 +42,7 @@ namespace Linije
                 for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                 {
                     Polazak p = new Polazak();
-                    p.Vreme = ds.Tables[0].Rows[i][0].ToString();
+                    p.Vreme = ds.Tables[0].Rows[i]["Vreme"].ToString();
                     lista.Add(p);
                 }
                 return lista;
@@ -73,7 +73,7 @@ namespace Linije
                 for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                 {
                     Polazak p = new Polazak();
-                    p.Vreme = ds.Tables[0].Rows[i][0].ToString();
+                    p.Vreme = ds.Tables[0].Rows[i]["Vreme"].ToString();
                     lista.Add(p);
                 }
                 return lista;

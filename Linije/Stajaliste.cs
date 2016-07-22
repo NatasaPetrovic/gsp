@@ -18,12 +18,15 @@ namespace Linije
        
         //public string GeoSirina { get; set; }
         //public string GeoDuzina { get; set; }
+        public string Ulica { get; set; }
+        public string Opstina { get; set; }
+        public string Naselje { get; set; }
         public int UlicaID { get; set; }
         public int Zona { get; set; }
                 
         #endregion
 
-        public DataSet ListStajalisteByLinijaAndSmer(string linija, string smer)
+        public List<Stajaliste> ListStajalisteByLinijaAndSmer(string linija, string smer)
         {
             SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["GSPConnection"].ConnectionString);
 
@@ -37,9 +40,27 @@ namespace Linije
 
             DataSet ds = new DataSet();
             adapter.Fill(ds, "listStajalisteByLinijaAndSmer");
+            List<Stajaliste> stajalista = new List<Stajaliste>();
 
-            return ds;
+            if(ds.Tables[0].Rows.Count != 0)
+            {
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+			{
+                Stajaliste stajaliste = new Stajaliste();
+                stajaliste.Naziv = ds.Tables[0].Rows[i]["Naziv"].ToString();
+                stajaliste.Opstina = ds.Tables[0].Rows[i]["Opstina"].ToString();
+                stajaliste.Naselje = ds.Tables[0].Rows[i]["Naselje"].ToString();
+                stajaliste.Ulica = ds.Tables[0].Rows[i]["Ulica"].ToString();
+
+                stajalista.Add(stajaliste);
+            }}
+
+
+            return stajalista;
         }
+
+       
+       
 
         
     }
