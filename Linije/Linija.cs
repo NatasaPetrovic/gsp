@@ -54,13 +54,27 @@ namespace Linije
             adapter.Fill(ds, "listLinijaByID");
             List<Linija> linije = new List<Linija>();
 
+
+
             if (ds.Tables[0].Rows.Count != 0)
                 for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                 {
+                    int vremePoluobrta;
+                    if(ds.Tables[0].Rows[i]["VremePoluobrta"].ToString() != "" )
+                        vremePoluobrta = Convert.ToInt32(ds.Tables[0].Rows[i]["VremePoluobrta"].ToString());
+                    else
+                        vremePoluobrta=0;
+
                     linije.Add(new Linija
                     {
                         Naziv = ds.Tables[0].Rows[i]["Naziv"].ToString(),
-                        OpisLinije = ds.Tables[0].Rows[i]["OpisLinije"].ToString()
+                        OpisLinije = ds.Tables[0].Rows[i]["OpisLinije"].ToString(),
+                        Dnevna = ds.Tables[0].Rows[i]["Dnevna"].ToString() == "1"?true:false,
+                        Status = ds.Tables[0].Rows[i]["Status"].ToString() == "1" ? true : false,
+                        VremePoluobrta = vremePoluobrta,
+                        ID = Convert.ToInt32(ds.Tables[0].Rows[i]["ID"].ToString()),
+                        VrstaLinije = ds.Tables[0].Rows[i]["VrstaLinije"].ToString(),
+                        VrstaVozila = ds.Tables[0].Rows[i]["VrstaVozila"].ToString(),
                     });
                 }
 
@@ -178,6 +192,96 @@ namespace Linije
 
             connection.Close();
             
+        }
+        public bool InsertLinija()
+        {
+            if (Naziv != null && OpisLinije != null)
+            {
+                SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["GSPConnection"].ConnectionString);
+
+                connection.Open();
+
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "insertLinija";
+                command.Connection = connection;
+                command.Parameters.Add("@Naziv", SqlDbType.VarChar, 5).Value = Naziv;
+                command.Parameters.Add("@OpisLinije", SqlDbType.NVarChar, 50).Value = OpisLinije;
+                command.Parameters.Add("@Dnevna", SqlDbType.Bit).Value = Dnevna;
+                command.Parameters.Add("@Status", SqlDbType.Bit).Value = Status;
+                command.Parameters.Add("@VremePoluobrta", SqlDbType.Int).Value = VremePoluobrta;
+                command.Parameters.Add("@VrstaLinije", SqlDbType.VarChar,10).Value = VrstaLinije;
+                command.Parameters.Add("@VrstaVozila", SqlDbType.VarChar, 10).Value = VrstaVozila;
+
+                int res = command.ExecuteNonQuery();
+
+                connection.Close();
+
+                if (res == 1)
+                    return true;
+                else
+                    return false;
+            }
+            else return false;
+        }
+
+        public bool UpdateLinija()
+        {
+            if (Naziv != null && OpisLinije != null)
+            {
+                SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["GSPConnection"].ConnectionString);
+
+                connection.Open();
+
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "updateLinija";
+                command.Connection = connection;
+                command.Parameters.Add("@ID", SqlDbType.Int).Value = ID;
+                command.Parameters.Add("@Naziv", SqlDbType.VarChar, 5).Value = Naziv;
+                command.Parameters.Add("@OpisLinije", SqlDbType.NVarChar, 50).Value = OpisLinije;
+                command.Parameters.Add("@Dnevna", SqlDbType.Bit).Value = Dnevna;
+                command.Parameters.Add("@Status", SqlDbType.Bit).Value = Status;
+                command.Parameters.Add("@VremePoluobrta", SqlDbType.Int).Value = VremePoluobrta;
+                command.Parameters.Add("@VrstaLinije", SqlDbType.VarChar, 10).Value = VrstaLinije;
+                command.Parameters.Add("@VrstaVozila", SqlDbType.VarChar, 10).Value = VrstaVozila;
+
+                int res = command.ExecuteNonQuery();
+
+                connection.Close();
+
+                if (res == 1)
+                    return true;
+                else
+                    return false;
+            }
+            else return false;
+        }
+
+        public bool DeleteLinija()
+        {
+            if (ID != 0)
+            {
+                SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["GSPConnection"].ConnectionString);
+
+                connection.Open();
+
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "deleteLinija";
+                command.Connection = connection;
+                command.Parameters.Add("@ID", SqlDbType.Int).Value = ID;
+
+                int res = command.ExecuteNonQuery();
+                connection.Close();
+                if (res == 1)
+                    return true;
+                else
+                    return false;
+
+
+            }
+            else return false;
         }
     }
 }

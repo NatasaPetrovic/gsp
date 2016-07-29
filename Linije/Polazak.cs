@@ -43,6 +43,8 @@ namespace Linije
                 {
                     Polazak p = new Polazak();
                     p.Vreme = ds.Tables[0].Rows[i]["Vreme"].ToString();
+                    p.ID = Convert.ToInt32(ds.Tables[0].Rows[i]["ID"].ToString());
+                    p.LinijaStajalisteID = Convert.ToInt32(ds.Tables[0].Rows[i]["LinijaStajalisteID"].ToString());
                     lista.Add(p);
                 }
                 return lista;
@@ -82,6 +84,88 @@ namespace Linije
 
         }
 
-       
+        public bool DeletePolazak()
+        {
+            if (ID != 0)
+            {
+                SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["GSPConnection"].ConnectionString);
+
+                connection.Open();
+
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "deletePolazak";
+                command.Connection = connection;
+                command.Parameters.Add("@ID", SqlDbType.Int).Value = ID;
+
+                int res = command.ExecuteNonQuery();
+                connection.Close();
+                if (res == 1)
+                    return true;
+                else
+                    return false;
+
+
+            }
+            else return false;
+        }
+
+        public bool UpdatePolazak()
+        {
+            if (ID != 0 && Vreme != null)
+            {
+                SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["GSPConnection"].ConnectionString);
+
+                connection.Open();
+
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "updatePolazak";
+                command.Connection = connection;
+                command.Parameters.Add("@ID", SqlDbType.Int).Value = ID;
+                command.Parameters.Add("@Vreme", SqlDbType.VarChar, 5).Value = Vreme;
+
+                int res = command.ExecuteNonQuery();
+
+                connection.Close();
+
+                if (res == 1)
+                    return true;
+                else
+                    return false;
+            }
+            else return false;
+
+        }
+
+        public bool InsertPolazak()
+        {
+            if (Vreme != null && Dan != null && LinijaStajalisteID != 0)
+            {
+                SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["GSPConnection"].ConnectionString);
+
+                connection.Open();
+
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "insertPolazak";
+                command.Connection = connection;
+                command.Parameters.Add("@Vreme", SqlDbType.VarChar, 5).Value = Vreme;
+                command.Parameters.Add("@Dan", SqlDbType.VarChar, 8).Value = Dan;
+                command.Parameters.Add("@LinijaStajalisteID", SqlDbType.Int).Value = LinijaStajalisteID;
+
+                int res = command.ExecuteNonQuery();
+
+                connection.Close();
+
+                if (res == 1)
+                    return true;
+                else
+                    return false;
+            }
+            else return false;
+        }
+
+
     }
 }
